@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{b529c681-55bb-4e25-a20d-539a4acea620}</ProjectGuid>
+    <RootNamespace>OG_Game_music</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir);$(ProjectDir)Efect;$(ProjectDir)Enemy;$(ProjectDir)Scene;$(ProjectDir)Util;$(ProjectDir)Enemy\Circle;$(ProjectDir)Enemy\Line;$(ProjectDir)Scene\Stage</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir);$(ProjectDir)Efect;$(ProjectDir)Enemy;$(ProjectDir)Scene;$(ProjectDir)Util;$(ProjectDir)Enemy\Circle;$(ProjectDir)Enemy\Line;$(ProjectDir)Scene\Stage</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir);$(ProjectDir)Efect;$(ProjectDir)Enemy;$(ProjectDir)Scene;$(ProjectDir)Util;$(ProjectDir)Enemy\Circle;$(ProjectDir)Enemy\Line;$(ProjectDir)Scene\Stage</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir);$(ProjectDir)Efect;$(ProjectDir)Enemy;$(ProjectDir)Scene;$(ProjectDir)Util;$(ProjectDir)Enemy\Circle;$(ProjectDir)Enemy\Line;$(ProjectDir)Scene\Stage</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir);$(ProjectDir)Efect;$(ProjectDir)Enemy;$(ProjectDir)Scene;$(ProjectDir)Util;$(ProjectDir)Enemy\Circle;$(ProjectDir)Enemy\Line;$(ProjectDir)Scene\Stage</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir);$(ProjectDir)Efect;$(ProjectDir)Enemy;$(ProjectDir)Scene;$(ProjectDir)Util;$(ProjectDir)Enemy\Circle;$(ProjectDir)Enemy\Line;$(ProjectDir)Scene\Stage</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir);$(ProjectDir)Efect;$(ProjectDir)Enemy;$(ProjectDir)Scene;$(ProjectDir)Util;$(ProjectDir)Enemy\Circle;$(ProjectDir)Enemy\Line;$(ProjectDir)Scene\Stage</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir);$(ProjectDir)Efect;$(ProjectDir)Enemy;$(ProjectDir)Scene;$(ProjectDir)Util;$(ProjectDir)Enemy\Circle;$(ProjectDir)Enemy\Line;$(ProjectDir)Scene\Stage</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Efect\AfterImagePlayer.cpp" />
+    <ClCompile Include="Efect\DashEfect.cpp" />
+    <ClCompile Include="DrawBGparts.cpp" />
+    <ClCompile Include="Efect\Efects.cpp" />
+    <ClCompile Include="Enemy\Line\EnemyBox.cpp" />
+    <ClCompile Include="Enemy\Circle\EnemyCircleScaling.cpp" />
+    <ClCompile Include="Efect\GoalEfect.cpp" />
+    <ClCompile Include="GraphManager.cpp" />
+    <ClCompile Include="Efect\HitEfect.cpp" />
+    <ClCompile Include="Scene\Stage\Stage2.cpp" />
+    <ClCompile Include="Scene\Stage\StageBase.cpp" />
+    <ClCompile Include="Scene\Stage\Stage1.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Scene\Stage\StageTutorial.cpp" />
+    <ClCompile Include="Scene\Stage\Stage3.cpp" />
+    <ClCompile Include="Util\Col.cpp" />
+    <ClCompile Include="DrawRotationCirlce.cpp" />
+    <ClCompile Include="Enemy\Circle\EnemyBurstedCircle.cpp" />
+    <ClCompile Include="Enemy\Circle\EnemyBurst.cpp" />
+    <ClCompile Include="Enemy\Circle\EnemyCircle.cpp" />
+    <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="Util\Application.cpp" />
+    <ClCompile Include="Enemy\Circle\EnemyCircleBase.cpp" />
+    <ClCompile Include="Enemy\Line\EnemyLineFromRight.cpp" />
+    <ClCompile Include="Enemy\Line\EnemyLineFromUpper.cpp" />
+    <ClCompile Include="Enemy\Line\EnemyLineBase.cpp" />
+    <ClCompile Include="Enemy\Line\EnemyLineDown.cpp" />
+    <ClCompile Include="Enemy\Line\EnemyLineFromLeft.cpp" />
+    <ClCompile Include="Scene\GameoverScene.cpp" />
+    <ClCompile Include="Scene\OptionScene.cpp" />
+    <ClCompile Include="Util\Input.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scene\PauseScene.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="Scene\StageSelect.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
+    <ClCompile Include="Util\Vec2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Efect\AfterImagePlayer.h" />
+    <ClInclude Include="Efect\DashEfect.h" />
+    <ClInclude Include="DrawBGparts.h" />
+    <ClInclude Include="Efect\Efects.h" />
+    <ClInclude Include="Enemy\Line\EnemyBox.h" />
+    <ClInclude Include="Enemy\Circle\EnemyCircleScaling.h" />
+    <ClInclude Include="Efect\GoalEfect.h" />
+    <ClInclude Include="GraphManager.h" />
+    <ClInclude Include="Efect\HitEfect.h" />
+    <ClInclude Include="Scene\Stage\Stage2.h" />
+    <ClInclude Include="Scene\Stage\StageBase.h" />
+    <ClInclude Include="Scene\Stage\Stage1.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Scene\Stage\StageTutorial.h" />
+    <ClInclude Include="Scene\Stage\Stage3.h" />
+    <ClInclude Include="Util\Col.h" />
+    <ClInclude Include="DrawRotationCirlce.h" />
+    <ClInclude Include="Enemy\Circle\EnemyBurstedCircle.h" />
+    <ClInclude Include="Enemy\Circle\EnemyBurst.h" />
+    <ClInclude Include="Enemy\Circle\EnemyCircle.h" />
+    <ClInclude Include="Goal.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Util\Application.h" />
+    <ClInclude Include="Enemy\Circle\EnemyCircleBase.h" />
+    <ClInclude Include="Enemy\Line\EnemyLineFromRight.h" />
+    <ClInclude Include="Enemy\Line\EnemyLineFromUpper.h" />
+    <ClInclude Include="Enemy\Line\EnemyLineBase.h" />
+    <ClInclude Include="Enemy\Line\EnemyLineDown.h" />
+    <ClInclude Include="Enemy\Line\EnemyLineFromLeft.h" />
+    <ClInclude Include="Util\Game.h" />
+    <ClInclude Include="Scene\GameoverScene.h" />
+    <ClInclude Include="Scene\OptionScene.h" />
+    <ClInclude Include="Util\Input.h" />
+    <ClInclude Include="Scene\PauseScene.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="Scene\StageSelect.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="Util\Vec2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+    <ResourceCompile Include="OG_Game_music.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
