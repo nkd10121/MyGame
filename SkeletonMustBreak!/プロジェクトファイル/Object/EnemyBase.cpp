@@ -20,6 +20,8 @@ namespace
 
 	//アニメーションブレンド率の最大
 	constexpr float kAnimBlendRateMax = 1.0f;
+
+	constexpr float kDistance = 2.6f;
 }
 
 EnemyBase::EnemyBase(Priority priority)
@@ -42,7 +44,7 @@ EnemyBase::EnemyBase(Priority priority)
 	m_lastHitObjectTag(),
 	m_attackWaitFrame(0),
 	m_knockCount(0),
-	m_routeNum(0),
+	m_routeIdx(0),
 	m_isChase(true),
 	m_isChasing(false)
 {
@@ -57,9 +59,12 @@ EnemyBase::~EnemyBase()
 void EnemyBase::Finalize(std::shared_ptr<MyLib::Physics>physics)
 {
 	Collidable::Finalize(physics);
-	m_pWeapon->CollisionEnd();
 	m_pHitbox->Finalize(m_pPhysics);
-	m_pSearch->Finalize(m_pPhysics);
+	if (m_isChase)
+	{
+		m_pWeapon->CollisionEnd();
+		m_pSearch->Finalize(m_pPhysics);
+	}
 }
 
 void EnemyBase::OnCollideEnter(const std::shared_ptr<Collidable>& colider)
@@ -74,9 +79,6 @@ void EnemyBase::OnCollideEnter(const std::shared_ptr<Collidable>& colider)
 #ifdef _DEBUG
 		message += "プレイヤー";
 #endif
-		m_isAttack = true;
-
-
 		break;
 	case GameObjectTag::Shot:	//プレイヤーが撃った弾と当たった時
 #ifdef _DEBUG
@@ -84,7 +86,6 @@ void EnemyBase::OnCollideEnter(const std::shared_ptr<Collidable>& colider)
 #endif
 		break;
 	}
-
 #ifdef _DEBUG
 	message += "と当たった！\n";
 	printfDx(message.c_str());
@@ -100,8 +101,6 @@ void EnemyBase::OnCollideStay(const std::shared_ptr<Collidable>& colider)
 	switch (tag)
 	{
 	case GameObjectTag::Player:		//プレイヤーと当たった時
-		m_isAttack = true;
-
 		break;
 	case GameObjectTag::Shot:	//プレイヤーが撃った弾と当たった時
 		break;
@@ -121,6 +120,10 @@ int EnemyBase::GetDropPoint()
 	return m_dropPoint;
 }
 
+/// <summary>
+/// ほかのオブジェクトと押し出し判定をする当たり判定を作成
+/// </summary>
+/// <param name="radius">半径</param>
 void EnemyBase::InitCollision(float radius)
 {
 	auto collider = Collidable::AddCollider(MyLib::ColliderData::Kind::Sphere, false);
@@ -128,12 +131,20 @@ void EnemyBase::InitCollision(float radius)
 	sphereCol->m_radius = radius;
 }
 
+/// <summary>
+/// モデルを読み込む
+/// </summary>
+/// <param name="path">モデルパス</param>
 void EnemyBase::LoadModel(std::string path)
 {
 	m_modelHandle = ModelManager::GetInstance().GetModelHandle(path);
 	MV1SetupCollInfo(m_modelHandle);
 }
 
+/// <summary>
+/// アニメーション情報や、ステータス情報を読み込む
+/// </summary>
+/// <param name="name">キャラクター名</param>
 void EnemyBase::LoadData(std::string name)
 {
 	CsvLoad::GetInstance().AnimDataLoad(name, m_animIdx);
@@ -145,8 +156,8 @@ void EnemyBase::LoadData(std::string name)
 /// <summary>
 /// 武器を生成する
 /// </summary>
-/// <param name="kind"></param>
-/// <param name="modelSize"></param>
+/// <param name="kind">武器の種類</param>
+/// <param name="modelSize">武器モデルの拡大率</param>
 void EnemyBase::CreateWeapon(WeaponKind kind, float modelSize)
 {
 	switch (kind)
@@ -161,6 +172,11 @@ void EnemyBase::CreateWeapon(WeaponKind kind, float modelSize)
 	}
 }
 
+/// <summary>
+/// ルートをモデルの高さに合うように調整する
+/// </summary>
+/// <param name="modelOffesetY">Y軸の差分</param>
+/// <param name="modelSize">モデルの拡大率</param>
 void EnemyBase::AdjustmentRoute(float modelOffesetY, float modelSize)
 {
 	for (int i = 0; i < m_route.size(); i++)
@@ -169,6 +185,10 @@ void EnemyBase::AdjustmentRoute(float modelOffesetY, float modelSize)
 	}
 }
 
+/// <summary>
+/// 物理クラスの初期化
+/// </summary>
+/// <param name="isUseGravity">true:重力を与える,false:重力を与えない</param>
 void EnemyBase::InitRigidbody(bool isUseGravity)
 {
 	rigidbody.Init(isUseGravity);
@@ -177,30 +197,50 @@ void EnemyBase::InitRigidbody(bool isUseGravity)
 	m_moveVec = (m_destinationPos - rigidbody.GetPos()).Normalize();
 }
 
+/// <summary>
+/// モデルの中心座標を計算
+/// </summary>
+/// <param name="modeldefaultSize">モデルのもともとのサイズ</param>
+/// <param name="modelSize">モデルの拡大率</param>
 void EnemyBase::CalculationCenterPos(float modeldefaultSize, float modelSize)
 {
 	m_centerPos = rigidbody.GetPos();
 	m_centerPos.y += modeldefaultSize * modelSize / 2;
 }
 
+/// <summary>
+/// モデル座標を設定
+/// </summary>
+/// <param name="offset">差分</param>
 void EnemyBase::SetModelPos(float offset)
 {
 	m_modelPos = m_collisionPos;
 	m_modelPos.y -= offset;
 }
 
+/// <summary>
+/// ダメージ判定をする当たり判定を作成
+/// </summary>
+/// <param name="radius">半径</param>
 void EnemyBase::InitHitBox(float radius)
 {
 	m_pHitbox = std::make_shared<HitBox>(radius);
 	m_pHitbox->Init(m_pPhysics, m_centerPos, true);
 }
 
+/// <summary>
+/// 索敵判定をする当たり判定を作成
+/// </summary>
+/// <param name="radius">半径</param>
 void EnemyBase::InitSearch(float radius)
 {
 	m_pSearch = std::make_shared<SearchObject>(radius);
 	m_pSearch->Init(m_pPhysics, m_modelPos, true);
 }
 
+/// <summary>
+/// ダメージを受けたとき
+/// </summary>
 void EnemyBase::OnDamage()
 {
 	//HPを減らす
@@ -223,12 +263,15 @@ void EnemyBase::OnDamage()
 	}
 }
 
+/// <summary>
+/// 死亡した時
+/// </summary>
 void EnemyBase::Death()
 {
 	if (!m_isDead)
 	{
 		m_isDead = true;
-		Finalize(m_pPhysics);
+		EnemyBase::Finalize(m_pPhysics);
 
 		m_updateFunc = &EnemyBase::DeathUpdate;
 
@@ -252,6 +295,9 @@ void EnemyBase::Death()
 	}
 }
 
+/// <summary>
+/// アニメーションブレンドの更新
+/// </summary>
 void EnemyBase::UpdateAnimationBlend()
 {
 	//アニメーションの切り替え
@@ -270,6 +316,10 @@ void EnemyBase::UpdateAnimationBlend()
 	}
 }
 
+/// <summary>
+/// モデルの座標設定
+/// </summary>
+/// <param name="offset"></param>
 void EnemyBase::SetDrawModelPos(float offset)
 {
 	rigidbody.SetPos(rigidbody.GetNextPos());
@@ -281,8 +331,7 @@ void EnemyBase::SetDrawModelPos(float offset)
 void EnemyBase::AttackUpdate(MyLib::Vec3 playerPos, bool isChase)
 {
 	rigidbody.SetVelocity(MyLib::Vec3());
-	////アニメーションの更新
-	//m_isAnimationFinish = UpdateAnim(m_currentAnimNo);
+	//アニメーションの更新
 
 	if (m_attackWaitFrame >= 20)
 	{
@@ -312,8 +361,6 @@ void EnemyBase::AttackUpdate(MyLib::Vec3 playerPos, bool isChase)
 
 			m_pSearch->IsTriggerReset();
 
-			//m_weapon->CollisionEnd();
-
 			m_updateFunc = &EnemyBase::WalkUpdate;
 			ChangeAnim(m_animIdx["Move"]);
 		}
@@ -326,7 +373,7 @@ void EnemyBase::AttackUpdate(MyLib::Vec3 playerPos, bool isChase)
 void EnemyBase::WalkUpdate(MyLib::Vec3 playerPos, bool isChase)
 {
 	//攻撃フラグがtrueになっていたら攻撃をする
-	if (m_isAttack)
+	if (m_isAttack && m_isChase)
 	{
 		m_moveVec = (playerPos - m_collisionPos).Normalize();
 
@@ -337,15 +384,19 @@ void EnemyBase::WalkUpdate(MyLib::Vec3 playerPos, bool isChase)
 		return;
 	}
 
-	if (m_pSearch->GetIsTrigger())
+	if (m_isChase)
 	{
-		m_isAttack = true;
+		if (m_pSearch->GetIsTrigger())
+		{
+			m_isAttack = true;
+		}
+
+		if (m_pSearch->GetIsStay())
+		{
+			m_isAttack = true;
+		}
 	}
 
-	if (m_pSearch->GetIsStay())
-	{
-		m_isAttack = true;
-	}
 
 	if (m_isKnock)
 	{
@@ -358,20 +409,19 @@ void EnemyBase::WalkUpdate(MyLib::Vec3 playerPos, bool isChase)
 		}
 	}
 
-	auto temp = (rigidbody.GetPos() - m_route[m_routeNum]).Size();
+	auto temp = (rigidbody.GetPos() - m_route[m_routeIdx]).Size();
 	if (temp < kDistance)
 	{
-		m_routeNum++;
-		if (m_routeNum == m_route.size())
+		m_routeIdx++;
+		if (m_routeIdx == m_route.size())
 		{
-			Finalize(m_pPhysics);
+			EnemyBase::Finalize(m_pPhysics);
 			m_isExist = false;
 			m_isReach = true;
 		}
 		else
 		{
-			m_destinationPos = m_route[m_routeNum];
-			//m_moveVec = (m_destinationPos - rigidbody.GetPos()).Normalize();
+			m_destinationPos = m_route[m_routeIdx];
 		}
 	}
 
@@ -419,14 +469,14 @@ void EnemyBase::WalkUpdate(MyLib::Vec3 playerPos, bool isChase)
 					}
 				}
 
-				if (retRouteNum != m_routeNum - 1)
+				if (retRouteNum != m_routeIdx - 1)
 				{
-					m_routeNum = retRouteNum;
+					m_routeIdx = retRouteNum;
 
 				}
 
 				//
-				m_destinationPos = m_route[m_routeNum];
+				m_destinationPos = m_route[m_routeIdx];
 				m_moveVec = (m_destinationPos - rigidbody.GetPos()).Normalize();
 			}
 		}

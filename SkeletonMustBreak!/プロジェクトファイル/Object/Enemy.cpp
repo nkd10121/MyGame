@@ -13,8 +13,6 @@ namespace
 	constexpr const char* kCharacterName = "NormalSkelton";
 	//モデルパス
 	constexpr const char* kModelPath = "data/model/Skeleton_Minion.mv1";
-	//押し出し当たり判定の半径
-	constexpr float kCollisionRadius = 1.6f;
 	//モデルの元のサイズ
 	constexpr float kModelDefaultSize = 2.166f;
 	//モデルサイズの拡大率
@@ -22,12 +20,17 @@ namespace
 	constexpr float kModelOffsetY = 0.3f;
 	//武器のモデルサイズ
 	constexpr float kWeaponModelSize = 0.01f;
+	//押し出し当たり判定の半径
+	constexpr float kCollisionRadius = 1.6f;
 	//索敵範囲
 	constexpr float kSearchingRadius = 30.0f;
 	//当たり判定の半径
 	constexpr float kHitBoxRadius = 3.8f;
 }
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Enemy::Enemy() :
 	EnemyBase(Collidable::Priority::Middle)
 {
@@ -43,10 +46,18 @@ Enemy::Enemy() :
 	m_searchRange = kSearchingRadius;
 }
 
+/// <summary>
+/// デストラクタ
+/// </summary>
 Enemy::~Enemy()
 {
 }
 
+/// <summary>
+/// 初期化
+/// </summary>
+/// <param name="physics">物理クラスのポインタ</param>
+/// <param name="route">移動ルート</param>
 void Enemy::Init(std::shared_ptr<MyLib::Physics> physics, std::vector<MyLib::Vec3> route)
 {
 	//代入
@@ -57,13 +68,14 @@ void Enemy::Init(std::shared_ptr<MyLib::Physics> physics, std::vector<MyLib::Vec
 	AdjustmentRoute(kModelOffsetY, kModelSizeScale);
 
 	//最初の目的地を設定する
-	m_routeNum = 1;
-	m_destinationPos = m_route[m_routeNum];
+	m_routeIdx = 1;
+	m_destinationPos = m_route[m_routeIdx];
 
 	//存在している状態にする
 	m_isExist = true;
 
 	Collidable::Init(m_pPhysics);
+
 	//物理クラスの初期化
 	InitRigidbody();
 
@@ -93,12 +105,11 @@ void Enemy::Init(std::shared_ptr<MyLib::Physics> physics, std::vector<MyLib::Vec
 	m_updateFunc = &Enemy::WalkUpdate;
 }
 
-void Enemy::Finalize(std::shared_ptr<MyLib::Physics> physics)
-{
-	//終了
-	EnemyBase::Finalize(physics);
-}
-
+/// <summary>
+/// 更新
+/// </summary>
+/// <param name="playerPos">プレイヤー座標</param>
+/// <param name="isChase">プレイヤーが追跡できる状態かどうか</param>
 void Enemy::Update(MyLib::Vec3 playerPos, bool isChase)
 {
 	//存在していない状態なら何もさせない
@@ -139,6 +150,9 @@ void Enemy::Update(MyLib::Vec3 playerPos, bool isChase)
 	m_pWeapon->Update((m_collisionPos + m_moveVec * 4));
 }
 
+/// <summary>
+/// 描画
+/// </summary>
 void Enemy::Draw()
 {
 	//存在していない状態なら何もさせない

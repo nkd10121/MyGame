@@ -15,29 +15,24 @@ namespace
 	constexpr const char* kCharacterName = "BigSkelton";
 	//モデルパス
 	constexpr const char* kModelPath = "data/model/SkeletonWarrior.mv1";
-
+	//モデルの元のサイズ
 	constexpr float kModelDefaultSize = 2.590f;
-
-	//モデルサイズ
+	//モデルサイズの拡大率
 	constexpr float kModelSizeScale = 6.8f;
 	constexpr float kModelOffsetY = 0.3f;
-
-	constexpr float kCollisionRadius = 2.0f;
-
+	//武器のモデルサイズ
 	constexpr float kWeaponModelSize = 0.01f;
-
-	//アニメーションの切り替えにかかるフレーム数
-	constexpr float kAnimChangeFrame = 10.0f;
-	constexpr float kAnimChangeRateSpeed = 1.0f / kAnimChangeFrame;
-
-	//アニメーションブレンド率の最大
-	constexpr float kAnimBlendRateMax = 1.0f;
-
+	//押し出し当たり判定の半径
+	constexpr float kCollisionRadius = 2.0f;
+	//索敵範囲
 	constexpr float kSearchingRadius = 30.0f;
 	//当たり判定の半径
 	constexpr float kHitBoxRadius = 6.0f;
 }
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 EnemyBig::EnemyBig():
 	EnemyBase(Collidable::Priority::Middle)
 {
@@ -53,10 +48,18 @@ EnemyBig::EnemyBig():
 	m_searchRange = kSearchingRadius;
 }
 
+/// <summary>
+/// デストラクタ
+/// </summary>
 EnemyBig::~EnemyBig()
 {
 }
 
+/// <summary>
+/// 初期化
+/// </summary>
+/// <param name="physics">物理クラスのポインタ</param>
+/// <param name="route">移動ルート</param>
 void EnemyBig::Init(std::shared_ptr<MyLib::Physics> physics, std::vector<MyLib::Vec3> route)
 {
 	//代入
@@ -67,8 +70,8 @@ void EnemyBig::Init(std::shared_ptr<MyLib::Physics> physics, std::vector<MyLib::
 	AdjustmentRoute(kModelOffsetY, kModelSizeScale);
 
 	//最初の目的地を設定する
-	m_routeNum = 1;
-	m_destinationPos = m_route[m_routeNum];
+	m_routeIdx = 1;
+	m_destinationPos = m_route[m_routeIdx];
 
 	//存在している状態にする
 	m_isExist = true;
@@ -104,12 +107,11 @@ void EnemyBig::Init(std::shared_ptr<MyLib::Physics> physics, std::vector<MyLib::
 	m_updateFunc = &EnemyBig::WalkUpdate;
 }
 
-void EnemyBig::Finalize(std::shared_ptr<MyLib::Physics> physics)
-{
-	//終了
-	EnemyBase::Finalize(physics);
-}
-
+/// <summary>
+/// 更新
+/// </summary>
+/// <param name="playerPos">プレイヤー座標</param>
+/// <param name="isChase">プレイヤーが追跡できる状態かどうか</param>
 void EnemyBig::Update(MyLib::Vec3 playerPos, bool isChase)
 {
 	//存在していない状態なら何もさせない
@@ -149,6 +151,9 @@ void EnemyBig::Update(MyLib::Vec3 playerPos, bool isChase)
 	m_pWeapon->Update((m_collisionPos + m_moveVec * 6));
 }
 
+/// <summary>
+/// 描画
+/// </summary>
 void EnemyBig::Draw()
 {
 	//存在していない状態なら何もさせない
